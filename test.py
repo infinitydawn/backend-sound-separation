@@ -36,5 +36,5 @@ with wave.open(file_path, 'r') as wav_file:
     frames = wav_file.readframes(num_samples_to_read)
     fmt = f"<{num_samples_to_read * wav_file.getnchannels()}{'h' if wav_file.getsampwidth() == 2 else 'B'}"
     samples = struct.unpack(fmt, frames)
-    print(f"First {num_samples_to_read} samples:", samples)
+    print(samples)
 
