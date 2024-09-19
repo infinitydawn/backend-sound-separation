@@ -18,8 +18,65 @@ const storage = multer.diskStorage({
 const upload = multer({ storage: storage });
 
 app.post('/upload', upload.single('file'), (req, res) => {
-  res.json({ message: 'File uploaded successfully!' });
+  const { spawn } = require('child_process');
+  const medianFiltering = spawn('python', ['test.py']);
+
+  let outputData = '';
+  let responseSent = false;
+
+  medianFiltering.stdout.on('data', function (data) {
+    outputData += data.toString();  // Accumulate the data
+  });
+
+  medianFiltering.stdout.on('end', function () {
+    if (!responseSent) {
+      responseSent = true;
+      res.json({ message: outputData });  // Send the response once all data is received
+    }
+  });
+
+  medianFiltering.stderr.on('data', function (data) {
+    console.error(`stderr: ${data}`);
+  });
+
+  medianFiltering.on('error', function (error) {
+    console.error(`Error spawning child process: ${error}`);
+    if (!responseSent) {
+      responseSent = true;
+      res.status(500).json({ error: 'Internal server error' });
+    }
+  });
+
+  medianFiltering.on('close', function (code) {
+    if (code !== 0) {
+      console.error(`Process exited with code: ${code}`);
+      if (!responseSent) {
+        responseSent = true;
+        res.status(500).json({ error: `Process exited with code ${code}` });
+      }
+    }
+  });
+
+  // Handle file deletion asynchronously after response
+  medianFiltering.on('exit', function() {
+    fs.readdir('uploads', (err, files) => {
+      if (err) {
+        console.error(`Error reading uploads directory: ${err}`);
+        return;
+      }
+      for (const file of files) {
+        fs.unlink(`uploads/${file}`, err => {
+          if (err) {
+            console.error(`Error deleting file ${file}: ${err}`);
+          } else {
+            console.log(`Deleted file: ${file}`);
+          }
+        });
+      }
+    });
+  });
 });
+
 
 app.listen(5000, () => {
   console.log('Server is running on http://localhost:5000');
