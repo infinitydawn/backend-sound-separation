@@ -28,7 +28,7 @@ import struct
 
 # Get the first file in the uploads directory
 files = os.listdir('./uploads')
-file_path = './uploads/' + files[0]
+file_path = './uploads/' + files[1]
 
 # Open the WAV file and read the first 100 samples
 with wave.open(file_path, 'r') as wav_file:
