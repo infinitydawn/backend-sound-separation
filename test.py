@@ -1,40 +1,41 @@
-# import random
-# import os
-
-# files = os.listdir('./uploads')
-
-# #random_number = random.randint(1, 10)
-# #print(files[0])
-
-# import wave
-# import contextlib
-# frames = ''
-# rate = ''
-
-# def get_wav_length(file_path):
-#     with contextlib.closing(wave.open(file_path, 'r')) as f:
-#         frames = f.getnframes()
-#         rate = f.getframerate()
-#         duration = frames / float(rate)
-#         return [duration,frames,rate]
-
-# file_path = './uploads/'+files[0]  # Replace with your WAV file path
-# audioInfo = get_wav_length(file_path)
-# print(f"Length of the WAV file: {audioInfo[0]} seconds\nNumber of frames: {audioInfo[1]}\nRate: {audioInfo[2]}")
-
 import os
 import wave
 import struct
+import sys
 
-# Get the first file in the uploads directory
+# Ensure that we have at least one command line argument
+if len(sys.argv) < 2:
+    print("Usage: python script.py <audioIndex>")
+    sys.exit(1)
+
+try:
+    # Attempt to convert the second command line argument to an integer
+    audioIndex = int(sys.argv[1])
+except ValueError:
+    # Handle the case where the conversion fails
+    print("Error: audioIndex must be an integer")
+    sys.exit(1)
+
+# List files in the 'uploads' directory
 files = os.listdir('./uploads')
-file_path = './uploads/' + files[1]
+if audioIndex < 0 or audioIndex >= len(files):
+    print("Error: audioIndex is out of bounds")
+    sys.exit(1)
 
-# Open the WAV file and read the first 100 samples
+# testing
+# print("The number of files: ", len(files))
+# print("The argv length: ", len(sys.argv))
+# print("The index: ", audioIndex)
+# print("List of files: ", files)
+
+# Select the file and make a the file path
+file_to_process = files[audioIndex]
+file_path = './uploads/' + file_to_process
+
+# Open the WAV file and read frames
 with wave.open(file_path, 'r') as wav_file:
     num_samples_to_read = 147008
     frames = wav_file.readframes(num_samples_to_read)
     fmt = f"<{num_samples_to_read * wav_file.getnchannels()}{'h' if wav_file.getsampwidth() == 2 else 'B'}"
     samples = struct.unpack(fmt, frames)
     print(samples)
-

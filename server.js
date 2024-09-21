@@ -60,23 +60,23 @@ app.post('/upload', upload.single('file'), (req, res) => {
     });
 
     // Handle file deletion asynchronously after response
-    medianFiltering.on('exit', function () {
-      fs.readdir('uploads', (err, files) => {
-        if (err) {
-          console.error(`Error reading uploads directory: ${err}`);
-          return;
-        }
-        for (const file of files) {
-          fs.unlink(`uploads/${file}`, err => {
-            if (err) {
-              console.error(`Error deleting file ${file}: ${err}`);
-            } else {
-              console.log(`Deleted file: ${file}`);
-            }
-          });
-        }
-      });
-    });
+    // medianFiltering.on('exit', function () {
+    //   fs.readdir('uploads', (err, files) => {
+    //     if (err) {
+    //       console.error(`Error reading uploads directory: ${err}`);
+    //       return;
+    //     }
+    //     for (const file of files) {
+    //       fs.unlink(`uploads/${file}`, err => {
+    //         if (err) {
+    //           console.error(`Error deleting file ${file}: ${err}`);
+    //         } else {
+    //           console.log(`Deleted file: ${file}`);
+    //         }
+    //       });
+    //     }
+    //   });
+    // });
   } catch (err) {
     res.status(500).json({ error: `${err}` });
   }
@@ -87,60 +87,65 @@ app.listen(5000, () => {
   console.log('Server is running on http://localhost:5000');
 });
 
-app.get('/get-status', (req, res) => {
+app.get('/load-track', (req, res) => {
   try {
-    const { spawn } = require('child_process');
-    const medianFiltering = spawn('python', ['test.py']);
+      const audioIndex = req.query.audioIndex;
+      const { spawn } = require('child_process');
+      const medianFiltering = spawn('python', ['test.py', audioIndex]);
 
-    let outputData = '';
+      let outputData = [];
+      // fixing the responses issue
+      let responseSent = false; 
 
-    medianFiltering.stdout.on('data', function (data) {
-      outputData += data.toString();  // Accumulate the data
-    });
+      medianFiltering.stdout.on('data', function (data) {
+          outputData.push(data);  
+      });
 
-    medianFiltering.stdout.on('end', function () {
-      res.json({ message: outputData });  // Send the response once all data is received
-    });
+      medianFiltering.stdout.on('end', function () {
+          if (!responseSent) {
+              let outputString = Buffer.concat(outputData).toString('utf8');
+              responseSent = true;
+              res.json({ message: outputString });
+          }
+      });
 
-    medianFiltering.stderr.on('data', function (data) {
-      console.error(`stderr: ${data}`);
-    });
+      medianFiltering.stderr.on('data', function (data) {
+          console.error(`stderr: ${data}`);
+      });
 
-    medianFiltering.on('error', function (error) {
-      console.error(`Error spawning child process: ${error}`);
-      res.status(500).json({ error: 'Internal server error' });
-    });
+      medianFiltering.on('error', function (error) {
+          console.error(`Error spawning child process: ${error}`);
+          if (!responseSent) {
+              responseSent = true;
+              res.status(500).json({ error: 'Internal server error caused by Python script' });
+          }
+      });
 
-    medianFiltering.on('close', function (code) {
-      if (code !== 0) {
-        console.error(`Process exited with code: ${code}`);
-        res.status(500).json({ error: `Process exited with code ${code}` });
-      }
-    });
+      medianFiltering.on('close', function (code) {
+          if (code !== 0 && !responseSent) {
+              console.error(`Process exited with code: ${code}`);
+              responseSent = true;
+              res.status(500).json({ error: `Process exited with non-zero code ${code}` });
+          }
+      });
   } catch (err) {
-    res.status(500).json({ error: `${err}` });
+      console.error('Server error:', err);
+      if (!res.headersSent) {
+          res.status(500).json({ error: 'Server error occurred' });
+      }
   }
 });
 
 app.get('/see-uploads', (req, res) => {
-  try {
-    fs.readdir("uploads", (err, files) => {
-      if (err) {
-        return res.json({ message: "error occured: " + err });
-      }
+  fs.readdir('uploads', (err, files) => {
+    if (err) {
+      console.error("Error reading uploads directory: ", err);
+      return res.status(500).json({ message: "Error reading uploads directory" });
+    }
 
-      let filesList = ''
+    // let filesList = files.join('\n'); // Concatenate filenames with newlines
 
-      files.forEach(file => {
-        filesList += `${file}\n`
-      })
+    res.json({ message: files });
+  });
+});
 
-      res.json({
-        message: filesList
-      })
-
-    })
-  } catch (err) {
-    res.status(500).json({ error: `${err}` });
-  }
-})
