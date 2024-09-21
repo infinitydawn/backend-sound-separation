@@ -84,6 +84,7 @@ app.post('/upload', upload.single('file'), (req, res) => {
 
 
 app.listen(5000, () => {
+  fs.mkdir("uploads");
   console.log('Server is running on http://localhost:5000');
 });
 
