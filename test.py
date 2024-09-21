@@ -13,14 +13,13 @@ try:
     audioIndex = int(sys.argv[1])
 except ValueError:
     # Handle the case where the conversion fails
-    print("Error: audioIndex must be an integer")
-    sys.exit(1)
+    raise ValueError("Error: audioIndex must be an integer")
 
 # List files in the 'uploads' directory
 files = os.listdir('./uploads')
 if audioIndex < 0 or audioIndex >= len(files):
-    print("Error: audioIndex is out of bounds")
-    sys.exit(1)
+    raise ValueError("Error: audioIndex is out of bounds")
+
 
 # testing
 # print("The number of files: ", len(files))

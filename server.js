@@ -112,13 +112,17 @@ app.get('/load-track', (req, res) => {
       medianFiltering.stdout.on('end', function () {
           if (!responseSent) {
               let outputString = Buffer.concat(outputData).toString('utf8');
-              responseSent = true;
-              res.json({ message: outputString });
+              
+              if(outputString !== ""){
+                res.json({ message: outputString });
+              } else {
+                outputString = "Failed to load the file."
+              }
           }
       });
 
       medianFiltering.stderr.on('data', function (data) {
-          console.error(`stderr: ${data}`);
+          console.error(`on data stderr: ${data}`);
       });
 
       medianFiltering.on('error', function (error) {
