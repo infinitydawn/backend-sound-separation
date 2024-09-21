@@ -84,9 +84,16 @@ app.post('/upload', upload.single('file'), (req, res) => {
 
 
 app.listen(5000, () => {
-  fs.mkdir("uploads");
+  fs.mkdir("uploads", (err) => {
+    if (err) {
+      console.error("Failed to create directory:", err);
+    } else {
+      console.log("Directory created successfully.");
+    }
+  });
   console.log('Server is running on http://localhost:5000');
 });
+
 
 app.get('/load-track', (req, res) => {
   try {
