@@ -17,17 +17,17 @@ Before you can run the server, you need to set it up on your local machine.
 
 ### Prerequisites
 
-- Node.js: The server runtime environment. [Download Node.js](https://nodejs.org/)
+- Node.js: The server runtime environment.
 - npm: Comes with Node.js and will handle package management.
-- Python: Required for running the audio processing script. [Download Python](https://www.python.org/downloads/)
+- Python: Required for running the audio processing script
 
 ### Setup Steps
 
 1. **Clone the repository**:
    Open a terminal and run the following command:
    ```bash
-   git clone https://your-repository-url
-   cd your-project-directory
+   git clone https://github.com/infinitydawn/backend-sound-separation.git
+   cd into your new rep
    ```
 
 2. **Install Node.js dependencies**:
