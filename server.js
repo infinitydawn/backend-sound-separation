@@ -21,7 +21,7 @@ app.post('/upload', upload.single('file'), (req, res) => {
 
   try {
     const { spawn } = require('child_process');
-    const medianFiltering = spawn('python', ['test.py']);
+    const medianFiltering = spawn('python', ['filter.py']);
 
     let outputData = '';
     let responseSent = false;
@@ -99,7 +99,7 @@ app.get('/load-track', (req, res) => {
   try {
       const audioIndex = req.query.audioIndex;
       const { spawn } = require('child_process');
-      const medianFiltering = spawn('python', ['test.py', audioIndex]);
+      const medianFiltering = spawn('python', ['filter.py', audioIndex]);
 
       let outputData = [];
       // fixing the responses issue

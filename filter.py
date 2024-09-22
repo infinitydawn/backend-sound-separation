@@ -3,19 +3,19 @@ import wave
 import struct
 import sys
 
-# Ensure that we have at least one command line argument
+# check command line arguments
 if len(sys.argv) < 2:
     print("Usage: python script.py <audioIndex>")
     sys.exit(1)
 
+
+#check the passed index
 try:
-    # Attempt to convert the second command line argument to an integer
     audioIndex = int(sys.argv[1])
 except ValueError:
-    # Handle the case where the conversion fails
     raise ValueError("Error: audioIndex must be an integer")
 
-# List files in the 'uploads' directory
+
 files = os.listdir('./uploads')
 if audioIndex < 0 or audioIndex >= len(files):
     raise ValueError("Error: audioIndex is out of bounds")
@@ -27,7 +27,7 @@ if audioIndex < 0 or audioIndex >= len(files):
 # print("The index: ", audioIndex)
 # print("List of files: ", files)
 
-# Select the file and make a the file path
+# Select the file 
 file_to_process = files[audioIndex]
 file_path = './uploads/' + file_to_process
 
