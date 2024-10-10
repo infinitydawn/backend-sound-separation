@@ -27,17 +27,32 @@ def compute_plot_spectrogram(x, Fs=22050, N=4096, H=2048, ylim=None,
     return Y
 
 Fs = 22050
-fn_wav = os.path.join('..', 'data', 'C8', './uploads/castanetsViolin.wav')
+fn_wav = os.path.join('./uploads/castanetsViolin.wav')
 x, Fs = librosa.load(fn_wav, sr=Fs)
 Y = compute_plot_spectrogram(x, Fs=Fs, title = 'Violin', ylim=[0, 3000], log=1)
+Z = signal.medfilt()
 ipd.display(ipd.Audio(data=x, rate=Fs))
 
-fn_wav = os.path.join('..', 'data', 'C8', './uploads/castanetsViolin.wav')
+fn_wav = os.path.join('./uploads/castanetsViolin.wav')
 x, Fs = librosa.load(fn_wav, sr=Fs)
 Y = compute_plot_spectrogram(x, Fs=Fs, title = 'Castanets', ylim=[0, 3000], log=1)
 ipd.display(ipd.Audio(data=x, rate=Fs))
 
-fn_wav = os.path.join('..', 'data', 'C8', './uploads/castanetsViolin.wav')
+fn_wav = os.path.join('./uploads/castanetsViolin.wav')
 x, Fs = librosa.load(fn_wav, sr=Fs)
 Y = compute_plot_spectrogram(x, Fs=Fs, title = 'Mix', ylim=[0, 3000], log=1)
 ipd.display(ipd.Audio(data=x, rate=Fs))
+
+def median_filter_horizontal(x, filter_len):
+    """Apply median filter in horizontal direction
+
+    Notebook: C8/C8S1_HPS.ipynb
+
+    Args:
+        x (np.ndarray): Input matrix
+        filter_len (int): Filter length
+
+    Returns:
+        x_h (np.ndarray): Filtered matrix
+    """
+    return signal.medfilt(x, [1, filter_len])
