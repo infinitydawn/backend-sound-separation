@@ -1,10 +1,17 @@
 const express = require('express');
 const router = express.Router();
-const processFile = require('../utils/processFile');
+const { addTaskToQueue } = require('../utils/queueManager');
 
 router.get('/', (req, res) => {
   const fileId = req.query.fileId;
-  processFile(fileId, res);
+  
+  addTaskToQueue(fileId, (err, result) =>{
+      if(err){
+        res.status(500).json({error: err.message})
+      }
+
+      res.json({message: result, fileId})
+  })
 });
 
 module.exports = router;

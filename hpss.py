@@ -26,22 +26,13 @@ def compute_plot_spectrogram(x, Fs=22050, N=4096, H=2048, ylim=None,
     plt.show()
     return Y
 
-Fs = 22050
+
+Fs = 22050  # how many samples taken per second
 inputVal = input()
 fn_wav = os.path.join('./uploads/'+inputVal+'.wav')
 x, Fs = librosa.load(fn_wav, sr=Fs)
-Y = compute_plot_spectrogram(x, Fs=Fs, title = 'Violin', ylim=[0, 3000], log=1)
+Y = compute_plot_spectrogram(x, Fs=Fs, title = inputVal, ylim=[0, 3000], log=1)
 # Z = signal.medfilt()
-ipd.display(ipd.Audio(data=x, rate=Fs))
-
-fn_wav = os.path.join('./uploads/'+inputVal+'.wav')
-x, Fs = librosa.load(fn_wav, sr=Fs)
-Y = compute_plot_spectrogram(x, Fs=Fs, title = 'Castanets', ylim=[0, 3000], log=1)
-ipd.display(ipd.Audio(data=x, rate=Fs))
-
-fn_wav = os.path.join('./uploads/'+inputVal+'.wav')
-x, Fs = librosa.load(fn_wav, sr=Fs)
-Y = compute_plot_spectrogram(x, Fs=Fs, title = 'Mix', ylim=[0, 3000], log=1)
 ipd.display(ipd.Audio(data=x, rate=Fs))
 
 
@@ -85,7 +76,8 @@ N, H = 1024, 512
 X = librosa.stft(x, n_fft=N, hop_length=H, win_length=N, window='hann', center=True, pad_mode='constant')
 Y = np.abs(X)**2
 
-L_set = np.array([[5,5],[23,9],[87,47]])
+
+L_set = np.array([[5,5],[23,9],[87,47]]) # filtering parameters
 num = L_set.shape[0]
 for m in range(num):
     L_h = L_set[m,0]
