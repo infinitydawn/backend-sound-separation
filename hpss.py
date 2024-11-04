@@ -27,18 +27,19 @@ def compute_plot_spectrogram(x, Fs=22050, N=4096, H=2048, ylim=None,
     return Y
 
 Fs = 22050
-fn_wav = os.path.join('./uploads/violin.wav')
+inputVal = input()
+fn_wav = os.path.join('./uploads/'+inputVal+'.wav')
 x, Fs = librosa.load(fn_wav, sr=Fs)
 Y = compute_plot_spectrogram(x, Fs=Fs, title = 'Violin', ylim=[0, 3000], log=1)
 # Z = signal.medfilt()
 ipd.display(ipd.Audio(data=x, rate=Fs))
 
-fn_wav = os.path.join('./uploads/castanets.wav')
+fn_wav = os.path.join('./uploads/'+inputVal+'.wav')
 x, Fs = librosa.load(fn_wav, sr=Fs)
 Y = compute_plot_spectrogram(x, Fs=Fs, title = 'Castanets', ylim=[0, 3000], log=1)
 ipd.display(ipd.Audio(data=x, rate=Fs))
 
-fn_wav = os.path.join('./uploads/castanetsViolin.wav')
+fn_wav = os.path.join('./uploads/'+inputVal+'.wav')
 x, Fs = librosa.load(fn_wav, sr=Fs)
 Y = compute_plot_spectrogram(x, Fs=Fs, title = 'Mix', ylim=[0, 3000], log=1)
 ipd.display(ipd.Audio(data=x, rate=Fs))
@@ -78,7 +79,7 @@ def plot_spectrogram_hp(Y_h, Y_p, Fs=22050, N=4096, H=2048, figsize =(10, 2),
     plt.show()
     
 Fs = 22050
-fn_wav = os.path.join('./uploads/castanetsViolin.wav')
+fn_wav = os.path.join('./uploads/'+inputVal+'.wav')
 x, Fs = librosa.load(fn_wav, sr=Fs, mono=True)
 N, H = 1024, 512
 X = librosa.stft(x, n_fft=N, hop_length=H, win_length=N, window='hann', center=True, pad_mode='constant')
@@ -137,7 +138,7 @@ ipd.display(ipd.Audio(data=x_h, rate=Fs))
 print('Percussive component signal')
 ipd.display(ipd.Audio(data=x_p, rate=Fs))
 
-output_fn = os.path.join('./output/x_h.wav')
+output_fn = os.path.join('./output/x_h_'+inputVal+'.wav')
 sf.write(output_fn, x_h, Fs)
-output_fn = os.path.join('./output/x_p.wav')
+output_fn = os.path.join('./output/x_p_'+inputVal+'.wav')
 sf.write(output_fn, x_p, Fs)
