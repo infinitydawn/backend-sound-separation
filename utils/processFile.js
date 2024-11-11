@@ -2,7 +2,8 @@ const { spawn } = require('child_process');
 
 function processFile(fileId, callback) {
   try {
-    const medianFiltering = spawn('python', ['filter.py', fileId]);
+    console.log("fileID before running python: "+fileId)
+    const medianFiltering = spawn('python', ['hpss.py', fileId]);
     let outputData = '';
     let errorOccurred = false;
 

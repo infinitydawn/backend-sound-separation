@@ -4,6 +4,8 @@ const fs = require('fs');
 const uploadRoute = require('./routes/upload');
 const loadTrackRoute = require('./routes/loadTrack');
 const seeUploadsRoute = require('./routes/seeUploads');
+const getHarmonicRoute = require('./routes/getHarmonic');
+const getPercussiveRoute = require('./routes/getPercussive');
 
 const app = express();
 app.use(cors());
@@ -12,6 +14,8 @@ app.use(cors());
 app.use('/upload', uploadRoute);
 app.use('/load-track', loadTrackRoute);
 app.use('/see-uploads', seeUploadsRoute);
+app.use('/get-harmonic', getHarmonicRoute);
+app.use('/get-percussive', getPercussiveRoute);
 
 app.listen(5000, () => {
   fs.mkdir('uploads', { recursive: true }, (err) => {
