@@ -11,13 +11,10 @@ const storageTool = multer({ storage: storageConfig });
 
 // multer saves file -> add task to queue -> when task done send response
 router.post('/', storageTool.single('file'), (req, res) => {
-  const data = {
-    fileId: req.file.filename,
-
-  }
+  const params = req.body.params;
   const fileId = req.file.filename;
 
-  addTaskToQueue(fileId, function(err, result){
+  addTaskToQueue(fileId,params, function(err, result){
     if (err){
         return res.status(500).json({ error: err.message})
     }

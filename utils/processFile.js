@@ -1,16 +1,21 @@
 const { spawn } = require('child_process');
 
-function processFile(fileId, callback) {
+function processFile(fileId,params, callback) {
+  const paramsJSON = JSON.parse(params);
+  // console.log("params in processfile")
+  console.log(paramsJSON)
   try {
-    let sampleRate = 22050;
-    let windowSize = 1024;
-    let hopLength = 512;
+    let sampleRate = paramsJSON.sampleRate ? paramsJSON.sampleRate : 22050;
+    let windowSize = paramsJSON.windowSize ? paramsJSON.windowSize : 1024;
+    let hopLength = paramsJSON.hopLength ? paramsJSON.hopLength : 512;
     let horizFilter = 27;
     let vertFilter = 1;
     let L_unit = "indices";
     let mask = "binary";
     eps = 0.001;
     detail = "False";
+
+    console.log("sampleRate is "+sampleRate+"\nwindow "+windowSize+"\nhop "+hopLength);
 
     console.log("fileID before running python: "+fileId)
     const medianFiltering = spawn('python', ['hpss.py', fileId, sampleRate, windowSize, hopLength, horizFilter, vertFilter, L_unit, mask, eps, detail]);
