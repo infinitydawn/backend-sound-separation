@@ -127,15 +127,28 @@ if len(sys.argv) < 2:
     print("Usage: python script.py <fileID>")
     sys.exit(1)
 
-fileID = sys.argv[1]
+for arg in sys.argv:
+    print(arg)
+
+
+
 
 # Select the file 
 
 #file_path = './uploads/' + fileID
+fileID = sys.argv[1]
+sampleRate = int(sys.argv[2])
+# sampleRate = 22050
+windowSize = int(sys.argv[3])
+hopLength = int(sys.argv[4])
+horizFilter = int(sys.argv[5])
+vertFilter = int(sys.argv[6])
+unit = sys.argv[7]
+mask = sys.argv[8]
+eps = float(sys.argv[9])
+detail = sys.argv[10] == "True"
 
-inputVal = fileID
-
-fn_wav = os.path.join('./uploads/'+inputVal)
+fn_wav = os.path.join('./uploads/'+fileID)
 
 x, Fs = librosa.load(fn_wav, sr=Fs, mono=True)
 
@@ -149,13 +162,13 @@ x, Fs = librosa.load(fn_wav, sr=Fs, mono=True)
 # L_h = 23
 # L_p = 9
 
-x_h, x_p = hps(x, 22050, 1024, 512, 23, 9, 'indices', 'binary', 0.001, False)
+x_h, x_p = hps(x, sampleRate, windowSize, hopLength, horizFilter, vertFilter, unit, mask, eps, detail)
 
 
 
-output_fn = os.path.join('./output/x_h_'+inputVal+'.wav')
+output_fn = os.path.join('./output/x_h_'+fileID+'.wav')
 sf.write(output_fn, x_h, Fs)
-output_fn = os.path.join('./output/x_p_'+inputVal+'.wav')
+output_fn = os.path.join('./output/x_p_'+fileID+'.wav')
 sf.write(output_fn, x_p, Fs)
 
 

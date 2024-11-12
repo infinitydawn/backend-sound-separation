@@ -2,8 +2,18 @@ const { spawn } = require('child_process');
 
 function processFile(fileId, callback) {
   try {
+    let sampleRate = 22050;
+    let windowSize = 1024;
+    let hopLength = 512;
+    let horizFilter = 27;
+    let vertFilter = 1;
+    let L_unit = "indices";
+    let mask = "binary";
+    eps = 0.001;
+    detail = "False";
+
     console.log("fileID before running python: "+fileId)
-    const medianFiltering = spawn('python', ['hpss.py', fileId]);
+    const medianFiltering = spawn('python', ['hpss.py', fileId, sampleRate, windowSize, hopLength, horizFilter, vertFilter, L_unit, mask, eps, detail]);
     let outputData = '';
     let errorOccurred = false;
 
