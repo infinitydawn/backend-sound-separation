@@ -1,5 +1,7 @@
 ipython
+libfmp
 librosa
+matplotlib
 numpy
 scipy
 soundfile
