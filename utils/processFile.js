@@ -8,8 +8,8 @@ function processFile(fileId,params, callback) {
     let sampleRate = paramsJSON.sampleRate ? paramsJSON.sampleRate : 22050;
     let windowSize = paramsJSON.windowSize ? paramsJSON.windowSize : 1024;
     let hopLength = paramsJSON.hopLength ? paramsJSON.hopLength : 512;
-    let horizFilter = 27;
-    let vertFilter = 1;
+    let horizFilter = paramsJSON.horizFilter ? paramsJSON.horizFilter : 23;
+    let vertFilter = paramsJSON.vertFilter ? paramsJSON.vertFilter : 9;
     let L_unit = "indices";
     let mask = "binary";
     eps = 0.001;
