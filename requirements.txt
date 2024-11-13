@@ -1,5 +1,4 @@
 ipython
-libfmp
 librosa
 numpy
 scipy
