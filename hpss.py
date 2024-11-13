@@ -1,12 +1,9 @@
 import os, sys
 import numpy as np
 from scipy import signal
-import matplotlib.pyplot as plt
-import IPython.display as ipd
 import librosa.display
 import soundfile as sf
 sys.path.append('..')
-import libfmp.b
 
 
 

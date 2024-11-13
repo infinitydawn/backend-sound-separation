@@ -1,7 +1,6 @@
-ipython==8.12.3
-libfmp==1.2.6
-librosa==0.10.2.post1
-matplotlib==3.7.2
-numpy==1.24.4
-scipy==1.11.3
-soundfile==0.12.1
+ipython
+libfmp
+librosa
+numpy
+scipy
+soundfile
