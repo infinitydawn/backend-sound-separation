@@ -2,6 +2,6 @@ ipython
 libfmp
 librosa
 matplotlib
-nump
+numpy
 scipy
 soundfile
