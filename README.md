@@ -4,7 +4,7 @@
 ## Overview
 
 This server application is built with Node.js and handles audio file uploads, processing using a Python script, and tracks management. It allows users to upload audio files, processes them to remove or filter content, and lists all uploaded tracks.
-[LINK TO DEMO]([https://frontend-sound-separation-coblcfh08-infinitydawns-projects.vercel.app/](https://frontend-sound-separation.vercel.app/))
+[LINK TO DEMO](https://frontend-sound-separation-coblcfh08-infinitydawns-projects.vercel.app/](https://frontend-sound-separation.vercel.app/))
 ## Features
 
 - **File Upload**: Upload audio files to the server.
